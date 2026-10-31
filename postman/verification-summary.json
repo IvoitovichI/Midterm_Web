@@ -1,0 +1,20 @@
+{
+  "collection": "Space Bounty - Midterm",
+  "target": "http://localhost:8081",
+  "mode": "live Flask/Gunicorn API with PostgreSQL 17 in Docker Compose",
+  "started_at": 1793435823999,
+  "completed_at": 1793435830002,
+  "requests": {
+    "total": 62,
+    "pending": 0,
+    "failed": 0
+  },
+  "assertions": {
+    "total": 132,
+    "pending": 0,
+    "failed": 0
+  },
+  "failures": [],
+  "exit_code": 0,
+  "desktop_gui_tested": false
+}
