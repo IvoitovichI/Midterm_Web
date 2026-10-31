@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hunts/"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: '{"criminal_id":{{criminalId}},"success":false,"notes":"Target escaped through an asteroid field."}'
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 201', () => pm.response.to.have.status(201));
+      const data = pm.response.json();
+      pm.test('Saved fields', () => { pm.expect(data.criminal_id).to.equal(Number(pm.collectionVariables.get('criminalId'))); pm.expect(data.success).to.equal(false); pm.expect(data.notes).to.equal('Target escaped through an asteroid field.'); });
+      pm.test('Server timestamp is recent UTC', () => { pm.expect(data.created_at).to.match(/Z$/); pm.expect(Math.abs(Date.now()-Date.parse(data.created_at))).to.be.below(60000); });
+      pm.test('Location header', () => pm.expect(pm.response.headers.get('Location')).to.equal('/api/hunts/'+data.id+'/'));
+      pm.collectionVariables.set('huntId', data.id); pm.collectionVariables.set('createdAt', data.created_at);
+      })();
+    language: text/javascript
+settings: {}
+order: 18000

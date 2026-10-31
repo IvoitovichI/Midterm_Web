@@ -1,0 +1,20 @@
+$kind: http-request
+name: "Invalid filter: min_reward=1&min_reward=2"
+url: "{{baseUrl}}/api/criminals/?min_reward=1&min_reward=2"
+method: GET
+queryParams:
+  - key: min_reward
+    value: "1"
+  - key: min_reward
+    value: "2"
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 400', () => pm.response.to.have.status(400));
+      const data = pm.response.json();
+      pm.test('JSON error message', () => pm.expect(data.error).to.be.a('string').and.not.empty);
+      })();
+    language: text/javascript
+settings: {}
+order: 47000

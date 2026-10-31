@@ -1,9 +1,7 @@
-# Use this workspace to collaborate
 workspace:
   id: c781a519-b09d-408f-bd08-aa1915da9373
-
-# All resources in the `postman/` folder are automatically registered in Local View.
-# Point to additional files outside the `postman/` folder to register them individually. Example:
-#localResources:
-#  collections:
-#    - ../tests/E2E Test Collection/
+cloudResources:
+  collections:
+    ../postman/collections/Space Bounty - Midterm: 26862398-216d4f50-f5b7-4a71-8632-5c8dd820c5db
+  environments:
+    ../postman/environments/Space Bounty - Midterm Local.environment.yaml: 26862398-03ae71da-c8c5-40f3-b3d2-baa6a0ada20e

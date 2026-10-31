@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/criminals/?has_crew=false"
+method: GET
+queryParams:
+  has_crew: "false"
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 200', () => pm.response.to.have.status(200));
+      const data = pm.response.json();
+      const expected = JSON.parse(pm.collectionVariables.get("allCriminals")).filter(c => c.has_crew === false);
+      pm.test('Exact matching set', () => pm.expect(data.map(c => c.id).sort((a,b)=>a-b)).to.eql(expected.map(c => c.id).sort((a,b)=>a-b)));
+      })();
+    language: text/javascript
+settings: {}
+order: 7000

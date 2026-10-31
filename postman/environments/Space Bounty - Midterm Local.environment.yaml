@@ -1,0 +1,4 @@
+name: Space Bounty - Midterm Local
+values:
+  - key: baseUrl
+    value: http://localhost:8081

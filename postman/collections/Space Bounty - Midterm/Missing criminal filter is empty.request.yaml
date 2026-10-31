@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hunts/?criminal_id=9223372036854775807"
+method: GET
+queryParams:
+  criminal_id: "9223372036854775807"
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 200', () => pm.response.to.have.status(200));
+      const data = pm.response.json();
+      pm.test('Empty array', () => pm.expect(data).to.eql([]));
+      })();
+    language: text/javascript
+settings: {}
+order: 56000

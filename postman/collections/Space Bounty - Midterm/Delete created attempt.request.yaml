@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hunts/{{huntId}}/"
+method: DELETE
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 204', () => pm.response.to.have.status(204));
+      pm.test('Empty response', () => pm.expect(pm.response.text()).to.equal(''));
+      })();
+    language: text/javascript
+settings: {}
+order: 58000

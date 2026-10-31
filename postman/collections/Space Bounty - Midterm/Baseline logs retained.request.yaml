@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hunts/"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 200', () => pm.response.to.have.status(200));
+      const data = pm.response.json();
+      pm.test('Only temporary test log removed', () => pm.expect(data).to.eql(JSON.parse(pm.collectionVariables.get('baselineLogs'))));
+      })();
+    language: text/javascript
+settings: {}
+order: 62000

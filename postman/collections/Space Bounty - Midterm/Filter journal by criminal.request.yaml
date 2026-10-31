@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hunts/?criminal_id={{criminalId}}"
+method: GET
+queryParams:
+  criminal_id: "{{criminalId}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 200', () => pm.response.to.have.status(200));
+      const data = pm.response.json();
+      const expected = JSON.parse(pm.collectionVariables.get('baselineLogs')).filter(h => h.criminal_id === Number(pm.collectionVariables.get('criminalId')));
+      pm.test('Exact journal subset', () => pm.expect(data).to.eql(expected));
+      })();
+    language: text/javascript
+settings: {}
+order: 17000

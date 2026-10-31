@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hunts/{{huntId}}/"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 404', () => pm.response.to.have.status(404));
+      const data = pm.response.json();
+      pm.test('JSON error message', () => pm.expect(data.error).to.be.a('string').and.not.empty);
+      })();
+    language: text/javascript
+settings: {}
+order: 59000

@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/hunts/{{huntId}}/"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 200', () => pm.response.to.have.status(200));
+      const data = pm.response.json();
+      pm.test('Updated values persist', () => { pm.expect(data.success).to.equal(true); pm.expect(data.notes).to.equal('Captured at Titan Outpost.'); });
+      })();
+    language: text/javascript
+settings: {}
+order: 22000

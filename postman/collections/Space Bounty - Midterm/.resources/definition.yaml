@@ -1,0 +1,9 @@
+$kind: collection
+description: Flask/PostgreSQL assignment. Run all requests in order. Creates and removes one temporary hunt; preserves seed data. Offline import requires no Postman workspace.
+variables:
+  baseUrl: http://localhost:8081
+  criminalId: ""
+  allCriminals: ""
+  baselineLogs: ""
+  huntId: ""
+  createdAt: ""

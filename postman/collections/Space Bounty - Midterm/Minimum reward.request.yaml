@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/criminals/?min_reward=5000"
+method: GET
+queryParams:
+  min_reward: "5000"
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 200', () => pm.response.to.have.status(200));
+      const data = pm.response.json();
+      const expected = JSON.parse(pm.collectionVariables.get("allCriminals")).filter(c => c.reward >= 5000);
+      pm.test('Exact matching set', () => pm.expect(data.map(c => c.id).sort((a,b)=>a-b)).to.eql(expected.map(c => c.id).sort((a,b)=>a-b)));
+      })();
+    language: text/javascript
+settings: {}
+order: 2000

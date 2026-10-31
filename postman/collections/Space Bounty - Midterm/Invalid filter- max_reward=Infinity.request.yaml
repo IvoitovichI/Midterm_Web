@@ -1,0 +1,17 @@
+$kind: http-request
+name: "Invalid filter: max_reward=Infinity"
+url: "{{baseUrl}}/api/criminals/?max_reward=Infinity"
+method: GET
+queryParams:
+  max_reward: Infinity
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 400', () => pm.response.to.have.status(400));
+      const data = pm.response.json();
+      pm.test('JSON error message', () => pm.expect(data.error).to.be.a('string').and.not.empty);
+      })();
+    language: text/javascript
+settings: {}
+order: 40000

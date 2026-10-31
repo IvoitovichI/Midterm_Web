@@ -1,0 +1,18 @@
+$kind: http-request
+name: "Invalid filter: min_reward=9000&max_reward=5000"
+url: "{{baseUrl}}/api/criminals/?min_reward=9000&max_reward=5000"
+method: GET
+queryParams:
+  min_reward: "9000"
+  max_reward: "5000"
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 400', () => pm.response.to.have.status(400));
+      const data = pm.response.json();
+      pm.test('JSON error message', () => pm.expect(data.error).to.be.a('string').and.not.empty);
+      })();
+    language: text/javascript
+settings: {}
+order: 42000

@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/criminals/"
+method: GET
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 200', () => pm.response.to.have.status(200));
+      const data = pm.response.json();
+      pm.test('At least 5 criminals', () => pm.expect(data.length).to.be.at.least(5));
+      pm.test('Criminal fields and location', () => data.forEach(c => { pm.expect(c).to.have.all.keys('id','name','nickname','reward','latitude','longitude','location_note','difficulty','armed','has_crew','escape_master'); pm.expect(c.reward).to.be.a('number').and.at.least(0); pm.expect(c.difficulty).to.be.within(1,10); ['armed','has_crew','escape_master'].forEach(k => pm.expect(c[k]).to.be.a('boolean')); if(c.latitude === null) { pm.expect(c.longitude).to.equal(null); pm.expect(c.location_note).to.be.a('string').and.not.empty; } else { pm.expect(c.latitude).to.be.within(-90,90); pm.expect(c.longitude).to.be.within(-180,180); } }));
+      pm.collectionVariables.set('criminalId', data[0].id);
+      pm.collectionVariables.set('allCriminals', JSON.stringify(data));
+      })();
+    language: text/javascript
+settings: {}
+order: 1000

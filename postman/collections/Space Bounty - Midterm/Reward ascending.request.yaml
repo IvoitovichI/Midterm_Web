@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{baseUrl}}/api/criminals/?sort=reward"
+method: GET
+queryParams:
+  sort: reward
+scripts:
+  - type: afterResponse
+    code: |-
+      (() => {
+      pm.test('HTTP 200', () => pm.response.to.have.status(200));
+      const data = pm.response.json();
+      const expected = JSON.parse(pm.collectionVariables.get("allCriminals")).filter(c => true);
+      pm.test('Exact matching set', () => pm.expect(data.map(c => c.id).sort((a,b)=>a-b)).to.eql(expected.map(c => c.id).sort((a,b)=>a-b)));
+      pm.test('Reward order', () => { for(let i=1;i<data.length;i++) pm.expect((data[i].reward-data[i-1].reward)*1).to.be.at.least(0); });
+      })();
+    language: text/javascript
+settings: {}
+order: 10000

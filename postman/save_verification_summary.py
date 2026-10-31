@@ -16,7 +16,12 @@ summary = {
     'assertions': run['stats']['assertions'],
     'failures': run['failures'],
     'exit_code': 0,
-    'desktop_gui_tested': False,
 }
+previous_path = here / 'verification-summary.json'
+if previous_path.exists():
+    previous = json.loads(previous_path.read_text(encoding='utf-8-sig'))
+    for key in ('desktop_gui_tested', 'desktop_run'):
+        if key in previous:
+            summary[key] = previous[key]
 (here / 'verification-summary.json').write_text(json.dumps(summary, indent=2) + '\n', encoding='utf-8')
 print(json.dumps(summary, indent=2))
